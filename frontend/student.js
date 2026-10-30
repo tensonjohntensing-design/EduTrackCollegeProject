@@ -1,6 +1,6 @@
-const API_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:')
+const API_URL = (window.location.protocol === 'file:')
     ? 'http://127.0.0.1:5000'
-    : 'https://tenson1234.pythonanywhere.com';
+    : window.location.origin;
 
 const currentStudent = localStorage.getItem('loggedInUser');
 const userRole = localStorage.getItem('userRole');
