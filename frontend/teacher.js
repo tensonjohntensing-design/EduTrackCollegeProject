@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Setup Mobile Navigation Drawer
+    setupMobileNav();
+
     // 3. Set default date to today
     const dateInput = document.getElementById('attendanceDate');
     if (dateInput) {
@@ -63,6 +66,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // 10. Load and render Grid Timetable
     loadGridTimetable();
 });
+
+// Mobile Navigation Drawer Toggle Handler
+function setupMobileNav() {
+    const toggleBtn = document.getElementById('mobileMenuToggle');
+    const closeBtn = document.getElementById('sidebarCloseBtn');
+    const overlay = document.getElementById('sidebarOverlay');
+    const sidebar = document.getElementById('sidebar');
+    if (!toggleBtn || !sidebar) return;
+
+    function openMenu() {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    toggleBtn.addEventListener('click', openMenu);
+    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+    if (overlay) overlay.addEventListener('click', closeMenu);
+
+    // Auto-close sidebar on mobile when navigation links are clicked
+    sidebar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+        });
+    });
+}
 
 // Logout Helper
 function logout() {
