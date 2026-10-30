@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack - Student</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for Visual Attendance & Grade Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>EduTrack</h2>
+            <ul>
+                <li><a href="#top-section">Dashboard</a></li>
+                <li><a href="#analytics-section">Analytics & Charts</a></li>
+                <li><a href="#academics-section" class="active">My Academics</a></li>
+                <li><a href="#settings-section">Account Settings</a></li>
+                <li><a href="#timetable-section">Timetable</a></li>
+                <li><a href="#" class="logout" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header id="top-section">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 id="welcomeMessage" style="color: darkgreen;">Welcome, Student!</h1>
+                    <span id="studentGreeting" style="font-weight: 600; color: #2c3e50; font-size: 16px;"></span>
+                </div>
+            </header>
+            
+            <!-- Quick Stat Tiles -->
+            <div class="stats-grid" id="analytics-section">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">📊</div>
+                    <div class="stat-info">
+                        <h4>Attendance Rate</h4>
+                        <h2 id="statAttendanceRate">--%</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">📅</div>
+                    <div class="stat-info">
+                        <h4>Classes Attended</h4>
+                        <h2 id="statAttendedCount">-- / --</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">🏆</div>
+                    <div class="stat-info">
+                        <h4>Average Marks</h4>
+                        <h2 id="statAvgMarks">--%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Charts Container -->
+            <div class="card-container">
+                <div class="card">
+                    <h3>Visual Attendance Ratio</h3>
+                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Ratio of present vs absent class sessions</p>
+                    <div class="chart-box">
+                        <canvas id="studentAttendanceChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Academic Performance</h3>
+                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Subject-wise percentage score comparison</p>
+                    <div class="chart-box">
+                        <canvas id="studentMarksChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container" id="academics-section">
+                <div class="card">
+                    <div id="attendanceAlert" style="display:none; padding: 12px 16px; margin-bottom: 20px; border-radius: 8px; font-weight: 600; text-align: center; border: 1px solid transparent;"></div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3>My Attendance Record</h3>
+                        <h2 id="overallPercentage" style="color: #2980b9; margin-bottom: 15px;">Total: --%</h2>
+                    </div>
+                    
+                    <table class="tt-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>My Marks & Grades</h3>
+                    <table class="tt-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marksTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-container" id="settings-section">
+                <div class="card" style="max-width: 600px;">
+                    <h3>Change My Password</h3>
+                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Update your student account login password</p>
+                    <form id="studentChangePasswordForm">
+                        <div class="input-group">
+                            <label>Current Password</label>
+                            <input type="password" id="studentCurrentPassword" placeholder="Enter current password" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="input-group" style="flex: 1;">
+                                <label>New Password</label>
+                                <input type="password" id="studentNewPassword" placeholder="New password" required>
+                            </div>
+                            <div class="input-group" style="flex: 1;">
+                                <label>Confirm Password</label>
+                                <input type="password" id="studentConfirmNewPassword" placeholder="Confirm password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="login-btn" style="background-color: #2980b9;">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-container" id="timetable-section">
+                <div class="card" style="overflow-x: auto;">
+                    <h3 style="text-align: center; color: darkblue;">BCA V Semester Weekly Timetable</h3>
+                    <table class="tt-table">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>9:00-10:00</th>
+                                <th>10:00-11:00</th>
+                                <th>11:00-11:15</th>
+                                <th>11:15-12:15</th>
+                                <th>12:15-1:15</th>
+                                <th>1:15-2:00</th>
+                                <th>2:00-3:00</th>
+                                <th>3:00-4:00</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridTimetableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="student.js"></script>
+</body>
+</html>

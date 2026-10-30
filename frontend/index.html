@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack - Login</title>
+    <!-- Links to your specific style.css file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+    
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-circle">🎓</div>
+            <h1>EduTrack</h1>
+            <p>Sign in to your account</p>
+        </div>
+
+        <form id="loginForm">
+            <!-- Custom Sliding Role Selector -->
+            <div class="role-selector">
+                <input type="radio" id="role-student" name="role" value="student" checked>
+                <label for="role-student" class="role-label">Student</label>
+                
+                <input type="radio" id="role-teacher" name="role" value="teacher">
+                <label for="role-teacher" class="role-label">Teacher</label>
+                
+                <div class="role-slider"></div>
+            </div>
+
+            <!-- Username Input -->
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Sign in to Dashboard</button>
+        </form>
+    </div>
+
+    <!-- SweetAlert2 perfectly formatted -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Link to your script file -->
+    <script src="script.js"></script>
+</body>
+</html>
