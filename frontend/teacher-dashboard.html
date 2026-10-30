@@ -23,225 +23,272 @@
                 <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">&times;</button>
             </div>
             <ul>
-                <li><a href="#top-section">Dashboard</a></li>
-                <li><a href="#analytics-section">Class Analytics</a></li>
-                <li><a href="#management-section" class="active">Student Management</a></li>
-                <li><a href="#admin-section">Settings & Admin</a></li>
-                <li><a href="#timetable-section">My Timetable</a></li>
+                <li><a href="#dashboard" class="nav-link active" data-view="view-dashboard">Dashboard</a></li>
+                <li><a href="#analytics" class="nav-link" data-view="view-analytics">Class Analytics</a></li>
+                <li><a href="#management" class="nav-link" data-view="view-management">Student Management</a></li>
+                <li><a href="#admin" class="nav-link" data-view="view-admin">Settings & Admin</a></li>
+                <li><a href="#timetable" class="nav-link" data-view="view-timetable">My Timetable</a></li>
                 <li><a href="#" class="logout" id="logoutBtn">Logout</a></li>
             </ul>
         </div>
         <div class="main-content">
             <header id="top-section">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                    <h1 style="color: darkgreen;">Teacher Dashboard</h1>
+                    <h1 id="pageTitle" style="color: darkgreen;">Teacher Dashboard</h1>
                     <span id="teacherGreeting" style="font-weight: 600; color: #2c3e50; font-size: 16px;"></span>
                 </div>
             </header>
             
-            <!-- Quick Stat Tiles -->
-            <div class="stats-grid" id="analytics-section">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">👥</div>
-                    <div class="stat-info">
-                        <h4>Total Students</h4>
-                        <h2 id="teacherTotalStudents">--</h2>
+            <!-- VIEW 1: DASHBOARD OVERVIEW -->
+            <div id="view-dashboard" class="dashboard-view active-view">
+                <!-- Quick Stat Tiles -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">👥</div>
+                        <div class="stat-info">
+                            <h4>Total Students</h4>
+                            <h2 id="teacherTotalStudents">--</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">📈</div>
+                        <div class="stat-info">
+                            <h4>Class Attendance</h4>
+                            <h2 id="teacherOverallRate">--%</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">✅</div>
+                        <div class="stat-info">
+                            <h4>Good Standing (≥75%)</h4>
+                            <h2 id="teacherGoodStanding">--</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fde8e8; color: #e74c3c;">⚠️</div>
+                        <div class="stat-info">
+                            <h4>Shortage Risk (&lt;75%)</h4>
+                            <h2 id="teacherShortageCount">--</h2>
+                        </div>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">📈</div>
-                    <div class="stat-info">
-                        <h4>Class Attendance</h4>
-                        <h2 id="teacherOverallRate">--%</h2>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">✅</div>
-                    <div class="stat-info">
-                        <h4>Good Standing (≥75%)</h4>
-                        <h2 id="teacherGoodStanding">--</h2>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #fde8e8; color: #e74c3c;">⚠️</div>
-                    <div class="stat-info">
-                        <h4>Shortage Risk (<75%)</h4>
-                        <h2 id="teacherShortageCount">--</h2>
+
+                <!-- Quick Management Shortcuts Card -->
+                <div class="card" style="margin-top: 25px;">
+                    <h3>Quick Management Shortcuts</h3>
+                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 12px;">Click any card below to navigate directly to that section:</p>
+                    <div class="quick-actions-grid">
+                        <div class="quick-action-card" data-navigate="view-management">
+                            <span class="quick-action-icon">📝</span>
+                            <span class="quick-action-title">Take Attendance</span>
+                            <span class="quick-action-desc">Mark student daily attendance</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-management">
+                            <span class="quick-action-icon">🎯</span>
+                            <span class="quick-action-title">Upload Marks</span>
+                            <span class="quick-action-desc">Record exam and test scores</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-analytics">
+                            <span class="quick-action-icon">📊</span>
+                            <span class="quick-action-title">Class Analytics</span>
+                            <span class="quick-action-desc">View attendance & standing graphs</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-timetable">
+                            <span class="quick-action-icon">📅</span>
+                            <span class="quick-action-title">My Timetable</span>
+                            <span class="quick-action-desc">View & edit weekly period schedule</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-admin">
+                            <span class="quick-action-icon">➕</span>
+                            <span class="quick-action-title">Add Student</span>
+                            <span class="quick-action-desc">Register new student accounts</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Visual Charts Container -->
-            <div class="card-container">
-                <div class="card">
-                    <h3>Subject Attendance Comparison</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Average attendance rate across conducted subjects</p>
-                    <div class="chart-box">
-                        <canvas id="teacherSubjectAttendanceChart"></canvas>
+            <!-- VIEW 2: CLASS ANALYTICS & CHARTS -->
+            <div id="view-analytics" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Subject Attendance Comparison</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Average attendance rate across conducted subjects</p>
+                        <div class="chart-box">
+                            <canvas id="teacherSubjectAttendanceChart"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <h3>Student Standing Distribution</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Proportion of students meeting the 75% requirement</p>
-                    <div class="chart-box">
-                        <canvas id="teacherStandingChart"></canvas>
+                    <div class="card">
+                        <h3>Student Standing Distribution</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Proportion of students meeting the 75% requirement</p>
+                        <div class="chart-box">
+                            <canvas id="teacherStandingChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="card-container" id="management-section">
-                <div class="card">
-                    <h3>Class Attendance Roster</h3>
-                    <form id="attendanceConfigForm">
-                        <div class="responsive-flex-row" style="margin-bottom: 10px;">
-                            <div class="input-group" style="flex: 1;">
-                                <label>Date</label>
-                                <input type="date" id="attendanceDate" required>
+            <!-- VIEW 3: STUDENT MANAGEMENT (ATTENDANCE & MARKS) -->
+            <div id="view-management" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Class Attendance Roster</h3>
+                        <form id="attendanceConfigForm">
+                            <div class="responsive-flex-row" style="margin-bottom: 10px;">
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Date</label>
+                                    <input type="date" id="attendanceDate" required>
+                                </div>
+                                
+                                <!-- Dropdown for Time Slot -->
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Time Slot</label>
+                                    <select id="attendanceTime" required>
+                                        <option value="" disabled selected>Select Time</option>
+                                        <option value="9:00-10:00">9:00 - 10:00</option>
+                                        <option value="10:00-11:00">10:00 - 11:00</option>
+                                        <option value="11:15-12:15">11:15 - 12:15</option>
+                                        <option value="12:15-1:15">12:15 - 1:15</option>
+                                        <option value="2:00-3:00">2:00 - 3:00</option>
+                                        <option value="3:00-4:00">3:00 - 4:00</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Dropdown for Subject -->
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Subject</label>
+                                    <select id="attendanceSubject" required>
+                                        <option value="" disabled selected>Select Subject</option>
+                                        <option value="Data Analytics">Data Analytics</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Web Programming">Web Programming</option>
+                                        <option value="Cryptography & Network Security">Cryptography & Network Security</option>
+                                        <option value="Quantitative Techniques">Quantitative Techniques</option>
+                                        <option value="Web Programming LAB">Web Programming LAB</option>
+                                        <option value="Data Analytics LAB">Data Analytics LAB</option>
+                                        <option value="Project / Counseling">Project / Counseling</option>
+                                    </select>
+                                </div>
                             </div>
-                            
-                            <!-- Dropdown for Time Slot -->
-                            <div class="input-group" style="flex: 1;">
-                                <label>Time Slot</label>
-                                <select id="attendanceTime" required>
-                                    <option value="" disabled selected>Select Time</option>
-                                    <option value="9:00-10:00">9:00 - 10:00</option>
-                                    <option value="10:00-11:00">10:00 - 11:00</option>
-                                    <option value="11:15-12:15">11:15 - 12:15</option>
-                                    <option value="12:15-1:15">12:15 - 1:15</option>
-                                    <option value="2:00-3:00">2:00 - 3:00</option>
-                                    <option value="3:00-4:00">3:00 - 4:00</option>
+                            <button type="submit" class="login-btn" style="background-color: #f39c12; margin-bottom: 15px;">Load Class Roster</button>
+                        </form>
+                        
+                        <form id="bulkAttendanceForm" style="display: none;">
+                            <div id="rosterHeaderInfo" style="padding: 10px; background-color: #eef2f7; border-radius: 6px; margin-bottom: 12px; font-weight: 600; color: #2c3e50;"></div>
+                            <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                                <button type="button" id="markAllPresentBtn" style="background: none; border: 1px solid #3498db; color: #3498db; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600;">✓ Mark All Present</button>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="tt-table" style="margin-bottom: 15px; min-width: 480px;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left; padding-left: 15px;">Student Username</th>
+                                            <th style="width: 120px;">Present</th>
+                                            <th style="width: 120px;">Absent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rosterBody"></tbody>
+                                </table>
+                            </div>
+                            <button type="submit" class="login-btn">Save Class Attendance</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3>Upload Marks</h3>
+                        <form id="marksForm">
+                            <div class="input-group">
+                                <label>Select Student</label>
+                                <select id="marksStudentSelect" required>
+                                    <option value="" disabled selected>Loading students...</option>
                                 </select>
                             </div>
-                            
-                            <!-- Dropdown for Subject -->
-                            <div class="input-group" style="flex: 1;">
-                                <label>Subject</label>
-                                <select id="attendanceSubject" required>
-                                    <option value="" disabled selected>Select Subject</option>
-                                    <option value="Data Analytics">Data Analytics</option>
-                                    <option value="Software Engineering">Software Engineering</option>
-                                    <option value="Web Programming">Web Programming</option>
-                                    <option value="Cryptography & Network Security">Cryptography & Network Security</option>
-                                    <option value="Quantitative Techniques">Quantitative Techniques</option>
-                                    <option value="Web Programming LAB">Web Programming LAB</option>
-                                    <option value="Data Analytics LAB">Data Analytics LAB</option>
-                                    <option value="Project / Counseling">Project / Counseling</option>
-                                </select>
+                            <div class="input-group">
+                                <label>Subject Name</label>
+                                <input type="text" id="subject" placeholder="e.g. Web Programming" required>
                             </div>
-                        </div>
-                        <button type="submit" class="login-btn" style="background-color: #f39c12; margin-bottom: 15px;">Load Class Roster</button>
-                    </form>
-                    
-                    <form id="bulkAttendanceForm" style="display: none;">
-                        <div id="rosterHeaderInfo" style="padding: 10px; background-color: #eef2f7; border-radius: 6px; margin-bottom: 12px; font-weight: 600; color: #2c3e50;"></div>
-                        <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
-                            <button type="button" id="markAllPresentBtn" style="background: none; border: 1px solid #3498db; color: #3498db; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600;">✓ Mark All Present</button>
-                        </div>
+                            <div class="responsive-flex-row">
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Score</label>
+                                    <input type="number" id="score" min="0" placeholder="e.g. 85" required>
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Out of</label>
+                                    <input type="number" id="total" value="100" min="1" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="login-btn" style="background-color: #27ae60;">Save Marks</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: SETTINGS & ADMIN -->
+            <div id="view-admin" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Register New Student</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Add a new student account to EduTrack</p>
+                        <form id="addStudentForm">
+                            <div class="input-group">
+                                <label>Student Username</label>
+                                <input type="text" id="newStudentUsername" placeholder="e.g. John_Doe" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Default Password</label>
+                                <input type="password" id="newStudentPassword" placeholder="Minimum 4 characters" required>
+                            </div>
+                            <button type="submit" class="login-btn" style="background-color: #8e44ad;">+ Register Student</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3>Change My Password</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Update your teacher account credentials</p>
+                        <form id="changePasswordForm">
+                            <div class="input-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                            </div>
+                            <div class="responsive-flex-row">
+                                <div class="input-group" style="flex: 1;">
+                                    <label>New Password</label>
+                                    <input type="password" id="newPassword" placeholder="New password" required>
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Confirm Password</label>
+                                    <input type="password" id="confirmNewPassword" placeholder="Confirm password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="login-btn" style="background-color: #2980b9;">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: MY TIMETABLE -->
+            <div id="view-timetable" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3 style="text-align: center; color: darkblue;">BCA V Semester Weekly Timetable</h3>
+                        <p style="text-align: center; color: #e74c3c; margin-bottom: 10px;">(Click any period cell to add, edit, or clear a subject • Swipe horizontally on mobile)</p>
                         <div class="table-wrapper">
-                            <table class="tt-table" style="margin-bottom: 15px; min-width: 480px;">
+                            <table class="tt-table" style="min-width: 720px;">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left; padding-left: 15px;">Student Username</th>
-                                        <th style="width: 120px;">Present</th>
-                                        <th style="width: 120px;">Absent</th>
+                                        <th>Day</th>
+                                        <th>9:00-10:00</th>
+                                        <th>10:00-11:00</th>
+                                        <th>11:00-11:15</th>
+                                        <th>11:15-12:15</th>
+                                        <th>12:15-1:15</th>
+                                        <th>1:15-2:00</th>
+                                        <th>2:00-3:00</th>
+                                        <th>3:00-4:00</th>
                                     </tr>
                                 </thead>
-                                <tbody id="rosterBody"></tbody>
+                                <tbody id="gridTimetableBody"></tbody>
                             </table>
                         </div>
-                        <button type="submit" class="login-btn">Save Class Attendance</button>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <h3>Upload Marks</h3>
-                    <form id="marksForm">
-                        <div class="input-group">
-                            <label>Select Student</label>
-                            <select id="marksStudentSelect" required>
-                                <option value="" disabled selected>Loading students...</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Subject Name</label>
-                            <input type="text" id="subject" placeholder="e.g. Web Programming" required>
-                        </div>
-                        <div class="responsive-flex-row">
-                            <div class="input-group" style="flex: 1;">
-                                <label>Score</label>
-                                <input type="number" id="score" min="0" placeholder="e.g. 85" required>
-                            </div>
-                            <div class="input-group" style="flex: 1;">
-                                <label>Out of</label>
-                                <input type="number" id="total" value="100" min="1" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="login-btn" style="background-color: #27ae60;">Save Marks</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card-container" id="admin-section">
-                <div class="card">
-                    <h3>Register New Student</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Add a new student account to EduTrack</p>
-                    <form id="addStudentForm">
-                        <div class="input-group">
-                            <label>Student Username</label>
-                            <input type="text" id="newStudentUsername" placeholder="e.g. John_Doe" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Default Password</label>
-                            <input type="password" id="newStudentPassword" placeholder="Minimum 4 characters" required>
-                        </div>
-                        <button type="submit" class="login-btn" style="background-color: #8e44ad;">+ Register Student</button>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <h3>Change My Password</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Update your teacher account credentials</p>
-                    <form id="changePasswordForm">
-                        <div class="input-group">
-                            <label>Current Password</label>
-                            <input type="password" id="currentPassword" placeholder="Enter current password" required>
-                        </div>
-                        <div class="responsive-flex-row">
-                            <div class="input-group" style="flex: 1;">
-                                <label>New Password</label>
-                                <input type="password" id="newPassword" placeholder="New password" required>
-                            </div>
-                            <div class="input-group" style="flex: 1;">
-                                <label>Confirm Password</label>
-                                <input type="password" id="confirmNewPassword" placeholder="Confirm password" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="login-btn" style="background-color: #2980b9;">Update Password</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card-container" id="timetable-section">
-                <div class="card">
-                    <h3 style="text-align: center; color: darkblue;">BCA V Semester Weekly Timetable</h3>
-                    <p style="text-align: center; color: #e74c3c; margin-bottom: 10px;">(Click any period cell to add, edit, or clear a subject • Swipe horizontally on mobile)</p>
-                    <div class="table-wrapper">
-                        <table class="tt-table" style="min-width: 720px;">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>9:00-10:00</th>
-                                    <th>10:00-11:00</th>
-                                    <th>11:00-11:15</th>
-                                    <th>11:15-12:15</th>
-                                    <th>12:15-1:15</th>
-                                    <th>1:15-2:00</th>
-                                    <th>2:00-3:00</th>
-                                    <th>3:00-4:00</th>
-                                </tr>
-                            </thead>
-                            <tbody id="gridTimetableBody"></tbody>
-                        </table>
                     </div>
                 </div>
             </div>

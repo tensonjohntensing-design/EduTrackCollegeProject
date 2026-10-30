@@ -23,11 +23,11 @@
                 <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">&times;</button>
             </div>
             <ul>
-                <li><a href="#top-section">Dashboard</a></li>
-                <li><a href="#analytics-section">Analytics & Charts</a></li>
-                <li><a href="#academics-section" class="active">My Academics</a></li>
-                <li><a href="#settings-section">Account Settings</a></li>
-                <li><a href="#timetable-section">Timetable</a></li>
+                <li><a href="#dashboard" class="nav-link active" data-view="view-dashboard">Dashboard</a></li>
+                <li><a href="#analytics" class="nav-link" data-view="view-analytics">Analytics & Charts</a></li>
+                <li><a href="#academics" class="nav-link" data-view="view-academics">My Academics</a></li>
+                <li><a href="#settings" class="nav-link" data-view="view-settings">Account Settings</a></li>
+                <li><a href="#timetable" class="nav-link" data-view="view-timetable">Timetable</a></li>
                 <li><a href="#" class="logout" id="logoutBtn">Logout</a></li>
             </ul>
         </div>
@@ -39,135 +39,182 @@
                 </div>
             </header>
             
-            <!-- Quick Stat Tiles -->
-            <div class="stats-grid" id="analytics-section">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">📊</div>
-                    <div class="stat-info">
-                        <h4>Attendance Rate</h4>
-                        <h2 id="statAttendanceRate">--%</h2>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">📅</div>
-                    <div class="stat-info">
-                        <h4>Classes Attended</h4>
-                        <h2 id="statAttendedCount">-- / --</h2>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">🏆</div>
-                    <div class="stat-info">
-                        <h4>Average Marks</h4>
-                        <h2 id="statAvgMarks">--%</h2>
-                    </div>
-                </div>
-            </div>
+            <!-- VIEW 1: DASHBOARD OVERVIEW -->
+            <div id="view-dashboard" class="dashboard-view active-view">
+                <div id="attendanceAlert" style="display:none; padding: 12px 16px; margin-top: 15px; border-radius: 8px; font-weight: 600; text-align: center; border: 1px solid transparent;"></div>
 
-            <!-- Visual Charts Container -->
-            <div class="card-container">
-                <div class="card">
-                    <h3>Visual Attendance Ratio</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Ratio of present vs absent class sessions</p>
-                    <div class="chart-box">
-                        <canvas id="studentAttendanceChart"></canvas>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>Academic Performance</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Subject-wise percentage score comparison</p>
-                    <div class="chart-box">
-                        <canvas id="studentMarksChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-container" id="academics-section">
-                <div class="card">
-                    <div id="attendanceAlert" style="display:none; padding: 12px 16px; margin-bottom: 20px; border-radius: 8px; font-weight: 600; text-align: center; border: 1px solid transparent;"></div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
-                        <h3>My Attendance Record</h3>
-                        <h2 id="overallPercentage" style="color: #2980b9; margin-bottom: 15px;">Total: --%</h2>
-                    </div>
-                    
-                    <div class="table-wrapper">
-                        <table class="tt-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Subject</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="attendanceTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>My Marks & Grades</h3>
-                    <div class="table-wrapper">
-                        <table class="tt-table">
-                            <thead>
-                                <tr>
-                                    <th>Subject</th>
-                                    <th>Score</th>
-                                    <th>Percentage</th>
-                                </tr>
-                            </thead>
-                            <tbody id="marksTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card-container" id="settings-section">
-                <div class="card" style="max-width: 600px;">
-                    <h3>Change My Password</h3>
-                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Update your student account login password</p>
-                    <form id="studentChangePasswordForm">
-                        <div class="input-group">
-                            <label>Current Password</label>
-                            <input type="password" id="studentCurrentPassword" placeholder="Enter current password" required>
+                <!-- Quick Stat Tiles -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">📊</div>
+                        <div class="stat-info">
+                            <h4>Attendance Rate</h4>
+                            <h2 id="statAttendanceRate">--%</h2>
                         </div>
-                        <div class="responsive-flex-row">
-                            <div class="input-group" style="flex: 1;">
-                                <label>New Password</label>
-                                <input type="password" id="studentNewPassword" placeholder="New password" required>
-                            </div>
-                            <div class="input-group" style="flex: 1;">
-                                <label>Confirm Password</label>
-                                <input type="password" id="studentConfirmNewPassword" placeholder="Confirm password" required>
-                            </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">📅</div>
+                        <div class="stat-info">
+                            <h4>Classes Attended</h4>
+                            <h2 id="statAttendedCount">-- / --</h2>
                         </div>
-                        <button type="submit" class="login-btn" style="background-color: #2980b9;">Update Password</button>
-                    </form>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">🏆</div>
+                        <div class="stat-info">
+                            <h4>Average Marks</h4>
+                            <h2 id="statAvgMarks">--%</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation Shortcuts -->
+                <div class="card" style="margin-top: 25px;">
+                    <h3>Quick Student Shortcuts</h3>
+                    <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 12px;">Click any card below to navigate directly to that section:</p>
+                    <div class="quick-actions-grid">
+                        <div class="quick-action-card" data-navigate="view-analytics">
+                            <span class="quick-action-icon">📈</span>
+                            <span class="quick-action-title">Performance Charts</span>
+                            <span class="quick-action-desc">Visual graphs for attendance & marks</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-academics">
+                            <span class="quick-action-icon">📋</span>
+                            <span class="quick-action-title">Attendance Records</span>
+                            <span class="quick-action-desc">Check date-wise class sessions</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-academics">
+                            <span class="quick-action-icon">🏆</span>
+                            <span class="quick-action-title">Marks & Grades</span>
+                            <span class="quick-action-desc">View latest subject exam scores</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-timetable">
+                            <span class="quick-action-icon">📅</span>
+                            <span class="quick-action-title">Weekly Timetable</span>
+                            <span class="quick-action-desc">View periods & class schedule</span>
+                        </div>
+                        <div class="quick-action-card" data-navigate="view-settings">
+                            <span class="quick-action-icon">🔐</span>
+                            <span class="quick-action-title">Change Password</span>
+                            <span class="quick-action-desc">Update your login credentials</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card-container" id="timetable-section">
-                <div class="card">
-                    <h3 style="text-align: center; color: darkblue;">BCA V Semester Weekly Timetable</h3>
-                    <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 8px;">(Swipe left/right on mobile to view all periods)</p>
-                    <div class="table-wrapper">
-                        <table class="tt-table" style="min-width: 720px;">
-                            <thead>
-                                <tr>
-                                    <th>Day</th>
-                                    <th>9:00-10:00</th>
-                                    <th>10:00-11:00</th>
-                                    <th>11:00-11:15</th>
-                                    <th>11:15-12:15</th>
-                                    <th>12:15-1:15</th>
-                                    <th>1:15-2:00</th>
-                                    <th>2:00-3:00</th>
-                                    <th>3:00-4:00</th>
-                                </tr>
-                            </thead>
-                            <tbody id="gridTimetableBody"></tbody>
-                        </table>
+            <!-- VIEW 2: VISUAL ANALYTICS & CHARTS -->
+            <div id="view-analytics" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3>Visual Attendance Ratio</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Ratio of present vs absent class sessions</p>
+                        <div class="chart-box">
+                            <canvas id="studentAttendanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Academic Performance</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 10px;">Subject-wise percentage score comparison</p>
+                        <div class="chart-box">
+                            <canvas id="studentMarksChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: MY ACADEMICS (ATTENDANCE & MARKS) -->
+            <div id="view-academics" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
+                            <h3>My Attendance Record</h3>
+                            <h2 id="overallPercentage" style="color: #2980b9; margin-bottom: 15px;">Total: --%</h2>
+                        </div>
+                        
+                        <div class="table-wrapper">
+                            <table class="tt-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendanceTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>My Marks & Grades</h3>
+                        <div class="table-wrapper">
+                            <table class="tt-table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Score</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="marksTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: ACCOUNT SETTINGS -->
+            <div id="view-settings" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card" style="max-width: 600px;">
+                        <h3>Change My Password</h3>
+                        <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 15px;">Update your student account login password</p>
+                        <form id="studentChangePasswordForm">
+                            <div class="input-group">
+                                <label>Current Password</label>
+                                <input type="password" id="studentCurrentPassword" placeholder="Enter current password" required>
+                            </div>
+                            <div class="responsive-flex-row">
+                                <div class="input-group" style="flex: 1;">
+                                    <label>New Password</label>
+                                    <input type="password" id="studentNewPassword" placeholder="New password" required>
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <label>Confirm Password</label>
+                                    <input type="password" id="studentConfirmNewPassword" placeholder="Confirm password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="login-btn" style="background-color: #2980b9;">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: TIMETABLE -->
+            <div id="view-timetable" class="dashboard-view">
+                <div class="card-container">
+                    <div class="card">
+                        <h3 style="text-align: center; color: darkblue;">BCA V Semester Weekly Timetable</h3>
+                        <p style="text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 8px;">(Swipe left/right on mobile to view all periods)</p>
+                        <div class="table-wrapper">
+                            <table class="tt-table" style="min-width: 720px;">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>9:00-10:00</th>
+                                        <th>10:00-11:00</th>
+                                        <th>11:00-11:15</th>
+                                        <th>11:15-12:15</th>
+                                        <th>12:15-1:15</th>
+                                        <th>1:15-2:00</th>
+                                        <th>2:00-3:00</th>
+                                        <th>3:00-4:00</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gridTimetableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

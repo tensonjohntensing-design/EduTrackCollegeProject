@@ -51,7 +51,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Load weekly grid timetable
     loadGridTimetable();
+
+    // 7. Setup Multi-View Tab Navigation
+    setupNavigationTabs();
 });
+
+// Multi-View Tab Navigation Handler
+function setupNavigationTabs() {
+    const navLinks = document.querySelectorAll('.sidebar ul li a.nav-link');
+    const views = document.querySelectorAll('.dashboard-view');
+
+    function showView(viewId) {
+        // 1. Hide all views
+        views.forEach(v => v.classList.remove('active-view'));
+
+        // 2. Show target view
+        const targetView = document.getElementById(viewId);
+        if (targetView) {
+            targetView.classList.add('active-view');
+        }
+
+        // 3. Update active nav link in sidebar
+        navLinks.forEach(link => {
+            if (link.getAttribute('data-view') === viewId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // 4. Update URL hash cleanly without jumping
+        const hash = viewId.replace('view-', '');
+        if (history.replaceState) {
+            history.replaceState(null, null, '#' + hash);
+        }
+
+        // 5. Scroll main container to top
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) mainContent.scrollTop = 0;
+
+        // 6. Trigger chart resize so Chart.js renders at full width
+        setTimeout(() => {
+            if (attendanceChartInstance) attendanceChartInstance.resize();
+            if (marksChartInstance) marksChartInstance.resize();
+            window.dispatchEvent(new Event('resize'));
+        }, 60);
+    }
+
+    // Attach click listener to sidebar links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const viewId = link.getAttribute('data-view');
+            if (viewId) {
+                showView(viewId);
+            }
+        });
+    });
+
+    // Support clickable quick action cards (data-navigate="view-...")
+    document.querySelectorAll('[data-navigate]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const viewId = card.getAttribute('data-navigate');
+            if (viewId) {
+                showView(viewId);
+            }
+        });
+    });
+
+    // Hash routing on page load (e.g. #timetable, #analytics, #academics, #settings)
+    const initialHash = window.location.hash.replace('#', '');
+    const initialViewId = 'view-' + initialHash;
+    if (initialHash && document.getElementById(initialViewId)) {
+        showView(initialViewId);
+    } else {
+        showView('view-dashboard');
+    }
+}
 
 // Mobile Navigation Drawer Toggle Handler
 function setupMobileNav() {
