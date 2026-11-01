@@ -19,6 +19,10 @@ let activeAttendanceConfig = null;
 let teacherSubjectChartInstance = null;
 let teacherStandingChartInstance = null;
 
+// Class students and standing filter state
+let currentClassStudents = [];
+let currentStandingFilter = 'all'; // 'all', 'good', 'risk'
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Display teacher name
     const greetingEl = document.getElementById('teacherGreeting');
@@ -68,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 11. Setup Multi-View Tab Navigation
     setupNavigationTabs();
+
+    // 12. Setup Class Students Standing Handlers
+    setupClassStudentsHandlers();
 });
 
 // Multi-View Tab Navigation Handler
@@ -111,6 +118,9 @@ function setupNavigationTabs() {
             window.dispatchEvent(new Event('resize'));
         }, 60);
     }
+
+    // Expose showView globally so cards and filters can switch views
+    window.showDashboardView = showView;
 
     // Attach click listener to sidebar links
     navLinks.forEach(link => {
@@ -201,6 +211,11 @@ function loadTeacherAnalytics() {
             }
             if (goodStandingEl) goodStandingEl.innerText = data.good_standing_count || 0;
             if (shortageCountEl) shortageCountEl.innerText = data.shortage_count || 0;
+
+            // Update Class Students Standing List
+            currentClassStudents = data.student_attendance || [];
+            updateStudentStandingCounts(currentClassStudents);
+            renderClassStudentsTable();
 
             // Render Charts
             renderSubjectAttendanceChart(data.subject_attendance || []);
@@ -304,6 +319,139 @@ function renderStandingChart(goodStanding, shortage) {
             },
             cutout: '68%'
         }
+    });
+}
+
+// Class Students Attendance Standing Handlers
+function updateStudentStandingCounts(students) {
+    const totalCount = students.length;
+    let goodCount = 0;
+    let riskCount = 0;
+
+    students.forEach(s => {
+        if (s.percentage >= 75 && s.total > 0) {
+            goodCount++;
+        } else {
+            riskCount++;
+        }
+    });
+
+    const allEl = document.getElementById('filterCountAll');
+    const goodEl = document.getElementById('filterCountGood');
+    const riskEl = document.getElementById('filterCountRisk');
+
+    if (allEl) allEl.innerText = totalCount;
+    if (goodEl) goodEl.innerText = goodCount;
+    if (riskEl) riskEl.innerText = riskCount;
+}
+
+function setStandingFilter(filterType) {
+    currentStandingFilter = filterType;
+    document.querySelectorAll('.student-filter-pills .filter-pill').forEach(btn => {
+        if (btn.getAttribute('data-filter') === filterType) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    renderClassStudentsTable();
+}
+
+function renderClassStudentsTable() {
+    const tbody = document.getElementById('classStudentsTableBody');
+    if (!tbody) return;
+
+    const searchInput = document.getElementById('studentSearchInput');
+    const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+    // 1. Filter by standing status
+    let filtered = currentClassStudents.filter(s => {
+        const isGood = s.percentage >= 75 && s.total > 0;
+        if (currentStandingFilter === 'good') return isGood;
+        if (currentStandingFilter === 'risk') return !isGood;
+        return true;
+    });
+
+    // 2. Filter by search input
+    if (query) {
+        filtered = filtered.filter(s => s.username.toLowerCase().includes(query));
+    }
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d; font-size: 14px;">No students found matching current filter or search.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = '';
+    filtered.forEach((student, index) => {
+        const isGood = student.percentage >= 75 && student.total > 0;
+        const rateColor = isGood ? '#27ae60' : (student.percentage >= 50 ? '#f39c12' : '#e74c3c');
+        const badgeHtml = isGood 
+            ? `<span style="background-color: #e8f8f5; color: #27ae60; border: 1px solid #a3e4d7; padding: 5px 12px; border-radius: 12px; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px;">✅ Good Standing</span>`
+            : `<span style="background-color: #fde8e8; color: #e74c3c; border: 1px solid #f5b7b1; padding: 5px 12px; border-radius: 12px; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px;">⚠️ Shortage Risk</span>`;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="color: #7f8c8d; font-weight: 600;">${index + 1}</td>
+            <td style="text-align: left; padding-left: 15px; font-weight: 600; color: #2c3e50;">
+                <span style="display: inline-flex; align-items: center; gap: 8px;">
+                    <span style="width: 28px; height: 28px; border-radius: 50%; background: #eef2f7; display: inline-flex; align-items: center; justify-content: center; font-size: 13px;">🎓</span>
+                    ${escapeHtml(student.username)}
+                </span>
+            </td>
+            <td><strong>${student.present}</strong> / ${student.total}</td>
+            <td style="color: ${student.absent > 0 ? '#e74c3c' : '#7f8c8d'}; font-weight: 600;">${student.absent}</td>
+            <td>
+                <span style="font-weight: 700; color: ${rateColor};">${student.percentage}%</span>
+                <div style="background: #eef2f7; border-radius: 4px; height: 6px; width: 90px; margin: 4px auto 0; overflow: hidden;">
+                    <div style="background: ${rateColor}; width: ${Math.min(student.percentage, 100)}%; height: 100%;"></div>
+                </div>
+            </td>
+            <td>${badgeHtml}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[m]);
+}
+
+function setupClassStudentsHandlers() {
+    // Filter pill button clicks
+    document.querySelectorAll('.student-filter-pills .filter-pill').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const filterType = btn.getAttribute('data-filter');
+            setStandingFilter(filterType);
+        });
+    });
+
+    // Real-time search filter
+    const searchInput = document.getElementById('studentSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            renderClassStudentsTable();
+        });
+    }
+
+    // Clickable stat tiles on dashboard
+    document.querySelectorAll('[data-view-filter]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const filterType = card.getAttribute('data-view-filter');
+            setStandingFilter(filterType);
+            if (window.showDashboardView) {
+                window.showDashboardView('view-students');
+            }
+        });
     });
 }
 

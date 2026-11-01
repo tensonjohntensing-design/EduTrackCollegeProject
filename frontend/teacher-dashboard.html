@@ -24,6 +24,7 @@
             </div>
             <ul>
                 <li><a href="#dashboard" class="nav-link active" data-view="view-dashboard">Dashboard</a></li>
+                <li><a href="#students" class="nav-link" data-view="view-students">Class Students</a></li>
                 <li><a href="#analytics" class="nav-link" data-view="view-analytics">Class Analytics</a></li>
                 <li><a href="#management" class="nav-link" data-view="view-management">Student Management</a></li>
                 <li><a href="#admin" class="nav-link" data-view="view-admin">Settings & Admin</a></li>
@@ -43,11 +44,12 @@
             <div id="view-dashboard" class="dashboard-view active-view">
                 <!-- Quick Stat Tiles -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card clickable-stat-card" data-view-filter="all" title="Click to view all enrolled students">
                         <div class="stat-icon" style="background-color: #ebf5fb; color: #3498db;">👥</div>
                         <div class="stat-info">
                             <h4>Total Students</h4>
                             <h2 id="teacherTotalStudents">--</h2>
+                            <span style="font-size: 11px; color: #3498db; font-weight: 600;">View Roster →</span>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -55,20 +57,23 @@
                         <div class="stat-info">
                             <h4>Class Attendance</h4>
                             <h2 id="teacherOverallRate">--%</h2>
+                            <span style="font-size: 11px; color: #7f8c8d;">Overall Average</span>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background-color: #fef9e7; color: #f39c12;">✅</div>
+                    <div class="stat-card clickable-stat-card" data-view-filter="good" title="Click to view Good Standing students">
+                        <div class="stat-icon" style="background-color: #e8f8f5; color: #27ae60;">✅</div>
                         <div class="stat-info">
                             <h4>Good Standing (≥75%)</h4>
                             <h2 id="teacherGoodStanding">--</h2>
+                            <span style="font-size: 11px; color: #27ae60; font-weight: 600;">View List →</span>
                         </div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card clickable-stat-card" data-view-filter="risk" title="Click to view Shortage Risk students">
                         <div class="stat-icon" style="background-color: #fde8e8; color: #e74c3c;">⚠️</div>
                         <div class="stat-info">
                             <h4>Shortage Risk (&lt;75%)</h4>
                             <h2 id="teacherShortageCount">--</h2>
+                            <span style="font-size: 11px; color: #e74c3c; font-weight: 600;">View List →</span>
                         </div>
                     </div>
                 </div>
@@ -78,6 +83,11 @@
                     <h3>Quick Management Shortcuts</h3>
                     <p style="color: #7f8c8d; font-size: 13px; margin-bottom: 12px;">Click any card below to navigate directly to that section:</p>
                     <div class="quick-actions-grid">
+                        <div class="quick-action-card" data-navigate="view-students">
+                            <span class="quick-action-icon">👥</span>
+                            <span class="quick-action-title">Class Students</span>
+                            <span class="quick-action-desc">Standing & attendance list</span>
+                        </div>
                         <div class="quick-action-card" data-navigate="view-management">
                             <span class="quick-action-icon">📝</span>
                             <span class="quick-action-title">Take Attendance</span>
@@ -103,6 +113,49 @@
                             <span class="quick-action-title">Add Student</span>
                             <span class="quick-action-desc">Register new student accounts</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CLASS STUDENTS & ATTENDANCE STANDING -->
+            <div id="view-students" class="dashboard-view">
+                <div class="card" style="margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+                        <div>
+                            <h3 style="margin-bottom: 4px; border-bottom: none; padding-bottom: 0;">Class Students Attendance Standing</h3>
+                            <p style="color: #7f8c8d; font-size: 13px;">View student names, class attendance rates, and Good Standing vs Shortage Risk</p>
+                        </div>
+                        
+                        <!-- Search input -->
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <input type="text" id="studentSearchInput" placeholder="🔍 Search student name..." style="padding: 9px 14px; border: 2px solid #ecf0f1; border-radius: 8px; font-size: 14px; min-width: 220px;">
+                        </div>
+                    </div>
+
+                    <!-- Filter Pills -->
+                    <div class="student-filter-pills">
+                        <button type="button" class="filter-pill active" id="filterAllBtn" data-filter="all">All Students (<span id="filterCountAll">0</span>)</button>
+                        <button type="button" class="filter-pill pill-good" id="filterGoodBtn" data-filter="good">✅ Good Standing (≥75%) (<span id="filterCountGood">0</span>)</button>
+                        <button type="button" class="filter-pill pill-risk" id="filterRiskBtn" data-filter="risk">⚠️ Shortage Risk (&lt;75%) (<span id="filterCountRisk">0</span>)</button>
+                    </div>
+
+                    <!-- Students Standing Table -->
+                    <div class="table-wrapper">
+                        <table class="tt-table" style="min-width: 650px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th style="text-align: left; padding-left: 15px;">Student Username</th>
+                                    <th style="width: 140px;">Classes Attended</th>
+                                    <th style="width: 100px;">Absent</th>
+                                    <th style="width: 180px;">Attendance Rate</th>
+                                    <th style="width: 180px;">Standing Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="classStudentsTableBody">
+                                <tr><td colspan="6" style="text-align: center; padding: 25px; color: #7f8c8d;">Loading class students...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

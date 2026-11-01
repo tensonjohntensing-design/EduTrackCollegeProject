@@ -498,19 +498,25 @@ def get_teacher_analytics():
 
     # 4. Student attendance standing (>=75% vs <75%)
     db.execute("""
-        SELECT student_username,
-               COUNT(*) as total,
-               SUM(CASE WHEN LOWER(status)='present' THEN 1 ELSE 0 END) as present
-        FROM attendance
-        GROUP BY student_username
+        SELECT u.username,
+               COUNT(a.id) as total,
+               SUM(CASE WHEN LOWER(a.status)='present' THEN 1 ELSE 0 END) as present
+        FROM users u
+        LEFT JOIN attendance a ON u.username = a.student_username
+        WHERE u.role = 'student'
+        GROUP BY u.username
+        ORDER BY u.username ASC
     """)
     good_standing = 0
     shortage = 0
     student_breakdown = []
     for row in db.fetchall():
-        uname, tot, prs = row[0], row[1], row[2] or 0
-        pct = round((float(prs) / float(tot) * 100), 1) if tot > 0 else 0
-        if pct >= 75:
+        uname = row[0]
+        tot = row[1] or 0
+        prs = row[2] or 0
+        pct = round((float(prs) / float(tot) * 100), 1) if tot > 0 else 0.0
+        status_label = "Good Standing" if pct >= 75 and tot > 0 else "Shortage Risk"
+        if pct >= 75 and tot > 0:
             good_standing += 1
         else:
             shortage += 1
@@ -518,7 +524,9 @@ def get_teacher_analytics():
             "username": uname,
             "total": tot,
             "present": prs,
-            "percentage": pct
+            "absent": tot - prs,
+            "percentage": pct,
+            "status": status_label
         })
 
     # 5. Total marks records
