@@ -232,17 +232,19 @@ function loadAttendance() {
 
             // Attendance Alert banner
             if (alertEl) {
-                alertEl.style.display = 'block';
+                alertEl.style.display = 'flex';
+                alertEl.style.alignItems = 'center';
+                alertEl.style.gap = '8px';
                 if (percentage < 75) {
                     alertEl.style.backgroundColor = '#fde8e8';
                     alertEl.style.color = '#9b1c1c';
                     alertEl.style.borderColor = '#f8b4b4';
-                    alertEl.innerHTML = `⚠️ <strong>Attendance Shortage Alert:</strong> Your attendance is currently <strong>${percentage}%</strong>, which is below the mandatory 75% requirement.`;
+                    alertEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> <span><strong>Attendance Shortage Alert:</strong> Your attendance is currently <strong>${percentage}%</strong>, which is below the mandatory 75% requirement.</span>`;
                 } else {
                     alertEl.style.backgroundColor = '#def7ec';
                     alertEl.style.color = '#03543f';
                     alertEl.style.borderColor = '#bcf0da';
-                    alertEl.innerHTML = `✅ <strong>Good Standing:</strong> Your attendance is currently <strong>${percentage}%</strong>. Keep up the good work!`;
+                    alertEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="20 6 9 17 4 12"/></svg> <span><strong>Good Standing:</strong> Your attendance is currently <strong>${percentage}%</strong>. Keep up the good work!</span>`;
                 }
             }
 

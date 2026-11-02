@@ -289,7 +289,7 @@ function renderStandingChart(goodStanding, shortage) {
     teacherStandingChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Good Standing (≥75%)', 'Shortage Risk (<75%)'],
+            labels: ['Good Standing (>= 75%)', 'Shortage Risk (< 75%)'],
             datasets: [{
                 data: [goodStanding, shortage],
                 backgroundColor: ['#2ecc71', '#e74c3c'],
@@ -387,15 +387,17 @@ function renderClassStudentsTable() {
         const isGood = student.percentage >= 75 && student.total > 0;
         const rateColor = isGood ? '#27ae60' : (student.percentage >= 50 ? '#f39c12' : '#e74c3c');
         const badgeHtml = isGood 
-            ? `<span style="background-color: #e8f8f5; color: #27ae60; border: 1px solid #a3e4d7; padding: 5px 12px; border-radius: 12px; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px;">✅ Good Standing</span>`
-            : `<span style="background-color: #fde8e8; color: #e74c3c; border: 1px solid #f5b7b1; padding: 5px 12px; border-radius: 12px; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 5px;">⚠️ Shortage Risk</span>`;
+            ? `<span class="standing-badge badge-good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Good Standing</span></span>`
+            : `<span class="standing-badge badge-risk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>Shortage Risk</span></span>`;
 
         const row = document.createElement('tr');
         row.innerHTML = `
             <td style="color: #7f8c8d; font-weight: 600;">${index + 1}</td>
             <td style="text-align: left; padding-left: 15px; font-weight: 600; color: #2c3e50;">
-                <span style="display: inline-flex; align-items: center; gap: 8px;">
-                    <span style="width: 28px; height: 28px; border-radius: 50%; background: #eef2f7; display: inline-flex; align-items: center; justify-content: center; font-size: 13px;">🎓</span>
+                <span style="display: inline-flex; align-items: center; gap: 10px;">
+                    <span class="student-avatar-badge">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
                     ${escapeHtml(student.username)}
                 </span>
             </td>
@@ -531,7 +533,7 @@ function setupAttendanceHandlers() {
                     });
 
                     if (rosterHeaderInfo) {
-                        rosterHeaderInfo.innerHTML = `📋 Roster for: <strong>${subject}</strong> &nbsp;|&nbsp; <strong>${timeSlot}</strong> &nbsp;|&nbsp; <strong>${date}</strong>`;
+                        rosterHeaderInfo.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>Roster for: <strong>${subject}</strong> &nbsp;|&nbsp; <strong>${timeSlot}</strong> &nbsp;|&nbsp; <strong>${date}</strong>`;
                     }
 
                     bulkForm.style.display = 'block';
